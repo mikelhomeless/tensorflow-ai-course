@@ -59,4 +59,4 @@ Network configurations tried:
     64 nodes, linear
     1 node, softmax
 
-What made this the best outcome: ¯\\_(ツ)_/¯
+What made this the best outcome: ¯\\\_(ツ)\_/¯
