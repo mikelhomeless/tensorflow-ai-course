@@ -1,8 +1,5 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import numpy as np
 import pandas as pd
-
 import tensorflow as tf
 
 from tensorflow import feature_column
@@ -21,17 +18,17 @@ def df_to_dataset(data, shuffle=True, batch_size=32):
 data = pd.read_csv('heart.csv')
 data.head()
 
-train, test = train_test_split(data, test_size=0.2)
-train, val = train_test_split(train, test_size=0.2)
+training, test = train_test_split(data, test_size=0.2)
+training, val = train_test_split(training, test_size=0.2)
 
 batch_size = 32
-train_data_set = df_to_dataset(train, batch_size=batch_size)
+training_data_Set = df_to_dataset(training, batch_size=batch_size)
 validation_data_set = df_to_dataset(val, shuffle=False, batch_size=batch_size)
 test_data_set = df_to_dataset(test, shuffle=False, batch_size=batch_size)
 
 feature_columns = []
 
-# numeric cols
+# numeric columns
 for column_name in ['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'slope', 'ca']:
   feature_columns.append(feature_column.numeric_column(column_name))
 
@@ -71,9 +68,9 @@ feature_layer = tf.keras.layers.DenseFeatures(feature_columns)
 model = tf.keras.Sequential([
   feature_layer,
   layers.Dense(128 , activation='sigmoid'),
-  layers.Dense(128 , activation='relu'),
-  layers.Dense(32, activation='linear'),
-  layers.Dense(64, activation='linear'),
+  layers.Dense(128, activation='sigmoid'),
+  layers.Dense(32, activation='relu'),
+  layers.Dense(25, activation='relu'),
   layers.Dense(1, activation='softmax')
 ])
 
@@ -81,7 +78,7 @@ model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(train_data_set,
+model.fit(training_data_Set,
           validation_data=validation_data_set,
           epochs=5)
 
